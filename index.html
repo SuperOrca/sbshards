@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypixel SkyBlock Shard Cost Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="header-title">
+                    <i class="fas fa-gem"></i>
+                    <h1>SkyBlock Shard Calculator</h1>
+                </div>
+                <p>Find the most cost-effective shards from the Hypixel Bazaar</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="controls-section">
+                <div class="controls-card">
+                    <div class="control-group">
+                        <button id="calculateBtn" class="btn btn-primary">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button id="manageShardsBtn" class="btn btn-accent">
+                            <i class="fas fa-cog"></i>
+                            Manage Shards
+                        </button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-gem"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Available Shards</span>
+                                <span id="totalShards" class="stat-value">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-eye-slash"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Ignored Shards</span>
+                                <span id="ignoredShards" class="stat-value">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Last Updated</span>
+                                <span id="lastUpdated" class="stat-value">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Instant Buy All</span>
+                                <span id="instaBuyTotal" class="stat-value">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Buy Order All</span>
+                                <span id="buyOrderTotal" class="stat-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="shardManagement" class="shard-management hidden">
+                <div class="management-card">
+                    <div class="management-header">
+                        <h3><i class="fas fa-list"></i> Shard Management</h3>
+                        <div class="management-actions">
+                            <input type="text" id="shardSearch" placeholder="Search shards..." class="search-input">
+                            <button id="selectAllBtn" class="btn btn-small">Select All</button>
+                            <button id="clearAllBtn" class="btn btn-small">Clear All</button>
+                            <button id="closeMgmtBtn" class="btn btn-small btn-close">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="shard-filters">
+                        <button class="filter-btn active" data-rarity="all">All</button>
+                        <button class="filter-btn" data-rarity="C">Common</button>
+                        <button class="filter-btn" data-rarity="U">Uncommon</button>
+                        <button class="filter-btn" data-rarity="R">Rare</button>
+                        <button class="filter-btn" data-rarity="E">Epic</button>
+                        <button class="filter-btn" data-rarity="L">Legendary</button>
+                    </div>
+                    <div id="shardList" class="shard-grid">
+                        <!-- Shard items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="results">
+                <div id="loadingSpinner" class="loading-spinner hidden">
+                    <div class="spinner"></div>
+                    <p><i class="fas fa-sync-alt fa-spin"></i> Fetching bazaar data...</p>
+                </div>
+
+                <div id="errorMessage" class="error-message hidden">
+                    <div class="error-content">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Something went wrong</h3>
+                        <p id="errorText"></p>
+                        <button id="retryBtn" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i>
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+
+                <div id="resultsTable" class="results-container hidden">
+                    <div class="results-header">
+                        <h3><i class="fas fa-chart-bar"></i> Shard Cost Analysis</h3>
+                        <div class="results-actions">
+                            <button id="exportBtn" class="btn btn-small btn-accent">
+                                <i class="fas fa-download"></i>
+                                Export CSV
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-trophy"></i> Rank</th>
+                                    <th><i class="fas fa-gem"></i> Shard Name</th>
+                                    <th><i class="fas fa-star"></i> Rarity</th>
+                                    <th><i class="fas fa-hashtag"></i> Required</th>
+                                    <th><i class="fas fa-bolt"></i> Insta Buy Price</th>
+                                    <th class="sortable" data-sort="instaBuyTotal">
+                                        <i class="fas fa-bolt"></i> Insta Buy Total
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th><i class="fas fa-hourglass-half"></i> Buy Order Price</th>
+                                    <th class="sortable" data-sort="buyOrderTotal">
+                                        <i class="fas fa-hourglass-half"></i> Buy Order Total
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th><i class="fas fa-cog"></i> Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p><i class="fas fa-database"></i> Data from Hypixel API • <i class="fas fa-clock"></i> Updated in real-time
+            </p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
