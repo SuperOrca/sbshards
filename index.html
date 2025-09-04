@@ -143,32 +143,38 @@
                 </div>
             </section>
 
-            <section id="shardManagement" class="shard-management hidden">
-                <div class="management-card">
-                    <div class="management-header">
+            <!-- Shard Management Modal -->
+            <div id="shardManagementModal" class="modal hidden">
+                <div class="modal-backdrop" id="modalBackdrop"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
                         <h3><i class="fas fa-list"></i> Shard Management</h3>
+                        <button id="closeMgmtBtn" class="btn btn-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
                         <div class="management-actions">
                             <input type="text" id="shardSearch" placeholder="Search shards..." class="search-input">
-                            <button id="selectAllBtn" class="btn btn-small">Select All</button>
-                            <button id="clearAllBtn" class="btn btn-small">Clear All</button>
-                            <button id="closeMgmtBtn" class="btn btn-small btn-close">
-                                <i class="fas fa-times"></i>
-                            </button>
+                            <div class="action-buttons">
+                                <button id="selectAllBtn" class="btn btn-small">Select All</button>
+                                <button id="clearAllBtn" class="btn btn-small">Clear All</button>
+                            </div>
+                        </div>
+                        <div class="shard-filters">
+                            <button class="filter-btn active" data-rarity="all">All</button>
+                            <button class="filter-btn" data-rarity="C">Common</button>
+                            <button class="filter-btn" data-rarity="U">Uncommon</button>
+                            <button class="filter-btn" data-rarity="R">Rare</button>
+                            <button class="filter-btn" data-rarity="E">Epic</button>
+                            <button class="filter-btn" data-rarity="L">Legendary</button>
+                        </div>
+                        <div id="shardList" class="shard-grid">
+                            <!-- Shard items will be populated by JavaScript -->
                         </div>
                     </div>
-                    <div class="shard-filters">
-                        <button class="filter-btn active" data-rarity="all">All</button>
-                        <button class="filter-btn" data-rarity="C">Common</button>
-                        <button class="filter-btn" data-rarity="U">Uncommon</button>
-                        <button class="filter-btn" data-rarity="R">Rare</button>
-                        <button class="filter-btn" data-rarity="E">Epic</button>
-                        <button class="filter-btn" data-rarity="L">Legendary</button>
-                    </div>
-                    <div id="shardList" class="shard-grid">
-                        <!-- Shard items will be populated by JavaScript -->
-                    </div>
                 </div>
-            </section>
+            </div>
 
             <section class="results">
                 <div id="loadingSpinner" class="loading-spinner hidden">

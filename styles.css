@@ -297,40 +297,80 @@ body {
     color: var(--text-accent);
 }
 
-/* Shard Management */
-.shard-management {
-    margin-bottom: 24px;
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
 }
 
-.management-card {
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
     background-color: var(--bg-secondary);
     border: var(--border);
     border-radius: var(--border-radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.management-header {
+.modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
+    padding: 24px;
+    border-bottom: var(--border);
+    background-color: var(--bg-tertiary);
+    flex-shrink: 0;
 }
 
-.management-header h3 {
+.modal-header h3 {
     color: var(--primary);
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 1.2rem;
+    margin: 0;
+}
+
+.modal-body {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
 }
 
 .management-actions {
     display: flex;
-    gap: 8px;
+    gap: 12px;
     align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
@@ -392,9 +432,13 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 12px;
-    max-height: 400px;
+    max-height: 50vh;
     overflow-y: auto;
     padding-right: 8px;
+    border: var(--border);
+    border-radius: var(--border-radius-small);
+    background-color: var(--bg-primary);
+    padding: 12px;
 }
 
 .shard-item {
@@ -734,23 +778,44 @@ body {
         grid-template-columns: 1fr;
     }
     
-    .management-header {
-        flex-direction: column;
-        align-items: stretch;
+    .modal {
+        padding: 8px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+    
+    .modal-content {
+        max-height: 95vh;
+    }
+    
+    .modal-header {
+        padding: 16px;
+        flex-direction: row;
+        gap: 12px;
+    }
+    
+    .modal-body {
+        padding: 16px;
     }
     
     .management-actions {
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
     }
     
     .search-input {
         width: 100%;
-        margin-bottom: 8px;
+    }
+    
+    .action-buttons {
+        justify-content: space-between;
     }
     
     .shard-grid {
         grid-template-columns: 1fr;
-        max-height: 300px;
+        max-height: 40vh;
+        padding: 8px;
     }
     
     .results-header {
@@ -795,6 +860,56 @@ body {
         width: 32px;
         height: 32px;
         font-size: 0.9rem;
+    }
+    
+    /* Modal adjustments for very small screens */
+    .modal {
+        padding: 4px;
+        padding-top: 10px;
+    }
+    
+    .modal-content {
+        max-height: 98vh;
+    }
+    
+    .modal-header {
+        padding: 12px;
+    }
+    
+    .modal-header h3 {
+        font-size: 1rem;
+    }
+    
+    .modal-body {
+        padding: 12px;
+    }
+    
+    .shard-grid {
+        max-height: 35vh;
+        padding: 6px;
+        gap: 8px;
+    }
+    
+    .shard-item {
+        padding: 10px;
+    }
+    
+    .management-actions {
+        gap: 8px;
+    }
+    
+    .action-buttons {
+        gap: 6px;
+    }
+    
+    .btn-small {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .filter-btn {
+        padding: 4px 8px;
+        font-size: 0.7rem;
     }
 }
 

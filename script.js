@@ -45,7 +45,8 @@ class ShardCalculator {
         this.exportBtn = document.getElementById('exportBtn');
 
         // Management interface
-        this.shardManagement = document.getElementById('shardManagement');
+        this.shardManagementModal = document.getElementById('shardManagementModal');
+        this.modalBackdrop = document.getElementById('modalBackdrop');
         this.closeMgmtBtn = document.getElementById('closeMgmtBtn');
         this.shardSearch = document.getElementById('shardSearch');
         this.selectAllBtn = document.getElementById('selectAllBtn');
@@ -83,6 +84,7 @@ class ShardCalculator {
         
         // Management buttons
         this.closeMgmtBtn.addEventListener('click', () => this.hideShardManagement());
+        this.modalBackdrop.addEventListener('click', () => this.hideShardManagement());
         this.selectAllBtn.addEventListener('click', () => this.toggleAllShards(true));
         this.clearAllBtn.addEventListener('click', () => this.toggleAllShards(false));
         
@@ -101,13 +103,14 @@ class ShardCalculator {
         if (this.exportBtn) {
             this.exportBtn.addEventListener('click', () => this.exportResults());
         }
-
-        // Keyboard shortcuts
+        
+        // Keyboard support for modal
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !this.shardManagement.classList.contains('hidden')) {
+            if (e.key === 'Escape' && !this.shardManagementModal.classList.contains('hidden')) {
                 this.hideShardManagement();
             }
         });
+
     }
 
     async loadShardsData() {
@@ -310,7 +313,7 @@ class ShardCalculator {
     }
 
     toggleShardManagement() {
-        if (this.shardManagement.classList.contains('hidden')) {
+        if (this.shardManagementModal.classList.contains('hidden')) {
             this.showShardManagement();
         } else {
             this.hideShardManagement();
@@ -318,12 +321,16 @@ class ShardCalculator {
     }
 
     showShardManagement() {
-        this.shardManagement.classList.remove('hidden');
+        this.shardManagementModal.classList.remove('hidden');
         this.populateShardList();
+        // Prevent body scroll when modal is open
+        document.body.style.overflow = 'hidden';
     }
 
     hideShardManagement() {
-        this.shardManagement.classList.add('hidden');
+        this.shardManagementModal.classList.add('hidden');
+        // Re-enable body scroll when modal is closed
+        document.body.style.overflow = '';
     }
 
     async fetchBazaarData() {
